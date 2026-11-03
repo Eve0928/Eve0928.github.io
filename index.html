@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Evelyn Choi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF2F0; --surface:#F7FAF9; --ink:#14232B; --muted:#4F626B;
+  --signal:#0E7C86; --alert:#C77A12; --line:#C9D6D2; --bar:#9CC7CB;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1A1F; --surface:#16252B; --ink:#E6EFEE; --muted:#9FB2B8;
+    --signal:#4CC3CE; --alert:#F0B25A; --line:#2A3C43; --bar:#2C5A60;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1A1F; --surface:#16252B; --ink:#E6EFEE; --muted:#9FB2B8;
+  --signal:#4CC3CE; --alert:#F0B25A; --line:#2A3C43; --bar:#2C5A60;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 "IBM Plex Sans",system-ui,sans-serif}
+a{color:var(--signal);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--alert);outline-offset:3px;border-radius:4px}
+.wrap{max-width:62rem;margin:0 auto;padding:0 1.5rem}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 0}
+header.top b{font:700 1.1rem "Bricolage Grotesque",sans-serif}
+nav a{margin-left:1.25rem;color:var(--muted);text-decoration:none;font-weight:500}
+nav a:hover{color:var(--ink)}
+.hero{padding:3rem 0 4rem}
+h1{font:700 clamp(3rem,9vw,6.5rem)/0.95 "Bricolage Grotesque",sans-serif;letter-spacing:-0.03em;margin:0 0 1.25rem}
+.lede{max-width:34rem;font-size:1.25rem;color:var(--muted);margin:0 0 2.5rem}
+.meter{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.25rem 1.25rem 1rem;position:relative}
+.bars{display:flex;align-items:flex-end;gap:5px;height:130px;position:relative}
+.bars i{flex:1;background:var(--bar);border-radius:3px 3px 0 0;height:20%;transition:height .35s ease,background .35s}
+.bars i.hot{background:var(--alert)}
+.bars i.on{background:var(--signal)}
+.thresh{position:absolute;left:0;right:0;bottom:62%;border-top:2px dashed var(--alert);pointer-events:none}
+.meter-foot{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:.9rem;font-size:.9rem;color:var(--muted)}
+.meter-foot button{font:inherit;color:var(--signal);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+section{padding:3.5rem 0;border-top:1px solid var(--line)}
+h2{font:700 1.9rem/1.15 "Bricolage Grotesque",sans-serif;margin:0 0 1.25rem;letter-spacing:-0.01em}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+p{margin:0 0 1rem;max-width:40rem}
+.project{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem;margin-bottom:1rem}
+.project h3{font:700 1.25rem "Bricolage Grotesque",sans-serif;margin:0 0 .25rem}
+.project .meta{color:var(--muted);font-size:.95rem;margin-bottom:.75rem}
+.project.empty{border-style:dashed;background:transparent;color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem;padding:0;margin:.75rem 0 0;list-style:none}
+.tags li{border:1px solid var(--line);border-radius:999px;padding:.15rem .75rem;font-size:.9rem}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:0 0 2rem}
+.photo{margin:0;aspect-ratio:4/5;border:0;border-radius:14px;background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.95rem;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.post{padding:1.5rem 0 4rem}
+.post-title{font:700 clamp(2.2rem,6vw,3.6rem)/1.05 "Bricolage Grotesque",sans-serif;letter-spacing:-0.02em;margin:1.5rem 0 .5rem}
+.post-meta{color:var(--muted);margin-bottom:2rem}
+.post figure{margin:1.75rem 0;max-width:32rem}
+.post figure img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:12px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.75rem;max-width:40rem;margin:1.75rem 0}
+.gallery figure{margin:0}
+.post h2{font:700 1.6rem/1.2 "Bricolage Grotesque",sans-serif;margin:2.75rem 0 1rem;letter-spacing:-0.01em}
+.post h3{font:700 1.15rem/1.3 "Bricolage Grotesque",sans-serif;margin:1.75rem 0 .5rem}
+.post table{border-collapse:collapse;width:100%;max-width:40rem;margin:0 0 1.5rem}
+.post th,.post td{text-align:left;padding:.55rem .75rem;border-bottom:1px solid var(--line)}
+.post th{border-bottom:2px solid var(--line)}
+.plink{margin:.9rem 0 0}
+.posts{list-style:none;margin:0;padding:0}
+.posts li{border-top:1px solid var(--line);padding:1.1rem 0}
+.posts li:last-child{border-bottom:1px solid var(--line)}
+.posts a{font:700 1.2rem "Bricolage Grotesque",sans-serif;text-decoration:none;color:var(--ink)}
+.posts a:hover{color:var(--signal);text-decoration:underline}
+.posts p{margin:.25rem 0 0;color:var(--muted);font-size:.98rem}
+@media (max-width:700px){.photos{grid-template-columns:1fr 1fr}}
+footer{padding:2rem 0 3rem;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line)}
+@media (max-width:700px){.cols{grid-template-columns:1fr;gap:1rem}nav a{margin-left:.9rem}.bars{height:100px}}
+@media (prefers-reduced-motion:reduce){.bars i{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <b>EC</b>
+    <nav><a href="#about">About</a><a href="#projects">Projects</a><a href="#thoughts">Thoughts</a><a href="#contact">Contact</a></nav>
+  </header>
+
+  <div id="home">
+  <div class="hero">
+    <h1>Evelyn Choi</h1>
+    <p class="lede">Computer Engineering student at the University of Waterloo, building embedded systems and software that people can actually use.</p>
+
+  </div>
+
+  <section id="about">
+    <h2>About</h2>
+    <div class="photos">
+      <figure class="photo"><img src="images/about-1.jpg" alt="Evelyn standing in front of white blossom trees" style="object-position:50% 30%"></figure>
+      <figure class="photo"><img src="images/about-2.jpg" alt="Two cats curled up asleep together on white bedding" style="object-position:50% 50%"></figure>
+      <figure class="photo"><img src="images/about-3.jpg" alt="A selfie of Evelyn in a white top" style="object-position:50% 20%"></figure>
+    </div>
+    <div class="cols">
+      <div>
+        <p>I’m a second-year Computer Engineering student at the University of Waterloo. I like projects where hardware and software meet, and where the result matters to a real person.</p>
+      </div>
+      <div>
+        <p>Outside of class, I like to listen to music, bake, and figure skate! I’m into building projects that answer real-world problems, and I’ve been brainstorming ideas for a few of them.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <article class="project">
+      <h3>Computer Vision Posture Monitor</h3>
+      <div class="meta">September 2026 · Computer vision</div>
+      <p>A real-time posture tracker that reads a live webcam feed at 30+ FPS using a custom-trained YOLOv8 pose model. I annotated a 1,200+ frame dataset in CVAT and built a React dashboard that shows focus time and posture metrics. All processing happens locally, so no video leaves the computer.</p>
+      <ul class="tags"><li>Python</li><li>OpenCV</li><li>YOLOv8</li><li>CVAT</li><li>React</li></ul>
+      <p class="plink"><a href="https://github.com/Eve0928/Computer-Vision-Posture-Monitor">View on GitHub</a></p>
+    </article>
+    <article class="project">
+      <h3>When The Plan Makes It Out of the Group Chat</h3>
+      <div class="meta">August 2026 · Web app</div>
+      <p>A scheduling app for friends who can’t pick a date. Everyone marks their availability on a shared monthly calendar, either all day or for specific times, and the app finds the best time to meet. Plans are created or joined with a code and sync in real time through Firebase.</p>
+      <ul class="tags"><li>JavaScript</li><li>HTML</li><li>CSS</li><li>Firebase</li></ul>
+      <p class="plink"><a href="https://github.com/Eve0928/WhenPlanMakesItOutGc">View on GitHub</a></p>
+    </article>
+    <article class="project">
+      <h3>GitHub Repository Analyzer</h3>
+      <div class="meta">August 2026 · Data engineering</div>
+      <p>A Python pipeline that pulls data on 100+ repositories, with their contributors and issues, from the GitHub REST API into a normalized four-table SQLite database. I used it to look at open-source project health, how concentrated contributions are, and adoption patterns.</p>
+      <ul class="tags"><li>SQL</li><li>SQLite</li><li>Python</li><li>GitHub API</li></ul>
+      <p class="plink"><a href="https://github.com/Eve0928/github-repo-analyzer">View on GitHub</a></p>
+    </article>
+    <article class="project">
+      <h3>Active Noise Reduction System</h3>
+      <div class="meta">November 2025 · Embedded systems</div>
+      <p>An Arduino noise detection system designed to help with hospital delirium. It combines a microphone and speaker with real-time signal processing (RMS, dB conversion, exponential averaging), alerts, and audio masking. I presented the design to hospital staff and used their feedback to add debounce logic and threshold-based event detection.</p>
+      <ul class="tags"><li>C++</li><li>Arduino</li><li>Signal processing</li><li>Embedded</li></ul>
+      <p class="plink"><a href="https://github.com/Eve0928/Active-Noise-Reduction-System">View on GitHub</a></p>
+    </article>
+  </section>
+
+  <section id="thoughts">
+    <h2>Thoughts</h2>
+    <p>Short pieces on what I’m learning and how school is going.</p>
+    <ul class="posts">
+      <li><a href="#first-year-at-waterloo">1A CE</a><p>Courses, a failed midterm, the friends I made, and what I’d tell incoming first years.</p></li>
+      <li><a href="#thoughts">[Next post title]</a><p>[One-line summary of the post.]</p></li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Let’s Get in Touch!</h2>
+    <p>Email me at <a href="mailto:evlyn.c28@gmail.com">evlyn.c28@gmail.com</a>.</p>
+    <p><a href="https://github.com/Eve0928">GitHub</a> · <a href="https://www.linkedin.com/in/evelyn-choi-3a954932b">LinkedIn</a></p>
+  </section>
+
+  </div>
+
+  <article id="post" class="post" hidden>
+    <p><a href="#thoughts">← Back to Thoughts</a></p>
+    <h1 class="post-title">1A CE</h1>
+    <figure><img loading="lazy" src="images/blog-1.jpg" alt="Posing in front of the University of Waterloo sign on campus"></figure>
+    <h2>Before it all started</h2>
+    <p>Back in high school, I had always pictured myself becoming a nurse. In fact, I applied to Nursing programs across Canada and got accepted into every single program I applied to.</p>
+    <p>Yet, somehow, I ended up choosing Computer Engineering at the University of Waterloo.</p>
+    <p>Why? Honestly, I don’t know. I just felt like I needed to. Maybe it had something to do with my sister, who was already studying Computer Science at the time. Maybe I just wanted to try something different. Whatever the reason was, I made my decision, and there I was, about to start a completely different chapter of my life.</p>
+    <p>Regardless of which program I ended up choosing, I was incredibly excited to finally experience university.</p>
+    <p>I was excited to have responsibility of my own, to move out of my house and live in a dorm, to meet new people, and hopefully, to meet some lifelong friends. I think I was more excited about the university experience itself than the actual program I was entering.</p>
+    <p>And then came Orientation Week (OWeek).</p>
+    <figure><img loading="lazy" src="images/blog-2.jpg" alt="A crowd of students in yellow hard hats during Orientation Week"></figure>
+
+    <h2>Orientation Week &amp; Dorm Life</h2>
+    <p>Orientation was fun. Yes, it was incredibly hot. Yes, it was tiring. But it was also the first time I got to meet so many people from different backgrounds and programs.</p>
+    <p>You know how orientation usually goes:</p>
+    <p>“What’s your name?”</p>
+    <p>“What program are you in?”</p>
+    <p>“Let’s follow each other on Instagram!”</p>
+    <p>Except, at Waterloo, things were a little different.</p>
+    <p>It was more like:</p>
+    <p>“What’s your LinkedIn?”</p>
+    <p>And honestly, that was shocking. LOL.</p>
+    <p>I lived in Village 1 (V1) during my first year, and I’d say my dorm experience was pretty decent.</p>
+    <p>I didn’t really get the chance to bond with my floor friends as much as I would have liked. None of them were in my program, and I was usually out of my dorm studying somewhere else or just spending my day outside. I’d sometimes come back at 12 AM, occasionally even 1 AM, so naturally, I wasn’t exactly the most active floor member.</p>
+    <p>That said, everyone was really nice, and I have no complaints about the people I met there.</p>
+    <p>Now, let’s talk about the food.</p>
+    <p>The dorm food was actually pretty good. I know a lot of people hated it, but I genuinely enjoyed it at first. That is, until I realized something. The more days I spent eating in the dorm cafeterias, the more I realized the menu eventually repeated, and everything started to taste the same.</p>
+    <p>The menu changed from day to day, with different ingredients and different textures, but it was the same repeating cycle...</p>
+    <figure><img loading="lazy" src="images/blog-3.jpg" alt="A student lying down on a desk in a concrete campus hallway"></figure>
+
+    <h2>Academics: Welcome to Engineering</h2>
+    <p>Now, onto the part everyone probably wants to hear about: academics.</p>
+    <p>During 1A, my course load consisted of seven courses:</p>
+    <table>
+      <thead><tr><th>Course</th><th>Name</th></tr></thead>
+      <tbody>
+        <tr><td>ECE 105</td><td>Classical Mechanics</td></tr>
+        <tr><td>ECE 150</td><td>Fundamentals of Programming</td></tr>
+        <tr><td>ECE 190</td><td>Engineering Profession and Practice</td></tr>
+        <tr><td>ECE 198</td><td>Project Studio</td></tr>
+        <tr><td>MATH 115</td><td>Linear Algebra</td></tr>
+        <tr><td>MATH 117</td><td>Calculus 1</td></tr>
+        <tr><td>COMMST 192</td><td>Communication in the Engineering Profession</td></tr>
+      </tbody>
+    </table>
+    <p>Let’s briefly go through each of them.</p>
+
+    <h3>MATH 115 &amp; MATH 117 — Linear Algebra and Calculus 1</h3>
+    <p>Honestly, these two were pretty decent. I enjoyed math in high school, and I still enjoy it now. The content was relatively straightforward for me, and I didn’t find these courses particularly difficult compared to the rest of my schedule.</p>
+
+    <h3>ECE 198 — Project Studio</h3>
+    <p>This course was... something.</p>
+    <p>It was honestly pretty boring and time-consuming. However, looking back, it was also my first real experience integrating software with hardware. So while I wouldn’t say I particularly enjoyed the course, I can appreciate what it introduced me to.</p>
+
+    <h3>ECE 190 — Engineering Profession and Practice</h3>
+    <p>I’ll be honest. I thought this course was pretty dumb. LOL.</p>
+    <p>It felt like one of those courses you just had to get through. But looking back, I think having a relatively lighter course in an otherwise heavy engineering schedule wasn’t necessarily a bad thing. Sometimes you need a break.</p>
+
+    <h3>ECE 150 — Fundamentals of Programming</h3>
+    <p>Oh, this one.</p>
+    <p>ECE 150 was my introduction to C++, and it was also my first real experience with programming.</p>
+    <p>Remember how I mentioned that I originally wanted to become a nurse? Well, that meant I hadn’t really spent much time learning how to code in high school.</p>
+    <p>So coming into Computer Engineering with very little programming experience was definitely a challenge.</p>
+    <p>I struggled. A LOT.</p>
+    <p>Concepts that seemed relatively straightforward to other people sometimes took me much longer to understand. I was constantly trying to catch up, and this course quickly became one of my biggest challenges in 1A.</p>
+
+    <h3>ECE 105 — Classical Mechanics</h3>
+    <p>Otherwise known as physics.</p>
+    <p>And if there’s one thing you should know about me, it’s that I HATE physics.</p>
+    <p>I was bad at physics in high school, and apparently, university wasn’t going to change that. This course was genuinely one of my biggest struggles.</p>
+    <p>ECE 105 and ECE 150 were probably my two hardest courses throughout 1A.</p>
+
+    <h3>COMMST 192 — Communication in the Engineering Profession</h3>
+    <p>I went into this course thinking it would be relatively fun.</p>
+    <p>Well, I was wrong.</p>
+    <p>It was essentially English, essay writing, presentations, and speaking in front of people, which, honestly, was not what I had in mind when I thought about engineering.</p>
+    <p>Let’s just say it was a traumatizing experience.</p>
+    <p>Overall, if I had to rank my experience with my 1A courses, MATH 115 and MATH 117 were probably the only ones I genuinely felt comfortable with.</p>
+    <p>Everything else? A journey.</p>
+    <figure><img loading="lazy" src="images/blog-4.jpg" alt="A large exam hall filled with rows of desks, seen from above"></figure>
+
+    <h2>My First Reality Check</h2>
+    <p>I think one of the biggest things about 1A was the transition itself.</p>
+    <p>It meant moving out of your house, living independently, managing your own schedule, doing your laundry, figuring out what to eat, and suddenly being responsible for pretty much everything.</p>
+    <p>University life was fun, but that fun came with a lot of responsibility.</p>
+    <p>And then there were the midterms.</p>
+    <p>Your first university midterm. Your first university final. Your first time experiencing an exam that carries a ridiculously large percentage of your final grade.</p>
+    <p>And, of course, your first time taking an exam at PAC.</p>
+    <p>Everything was new. Everything was exciting, but everything was also a little scary.</p>
+    <p>One thing I particularly remember was how different university felt academically compared to high school.</p>
+    <p>In high school, I was always considered one of the smarter students. I had relatively high grades, a good academic standing, and I was confident in my ability to do well academically.</p>
+    <p>Then I came to Waterloo.</p>
+    <p>Suddenly, I was surrounded by people who were just as smart, if not smarter. People who understood concepts faster, people who seemed to know exactly what they were doing, and people who made everything look so effortless.</p>
+    <p>And then came my midterms.</p>
+    <p>I genuinely failed one of my midterm exams.</p>
+    <p>That was a huge reality check for me.</p>
+    <p>I had never really experienced something like that before, and it honestly hit me pretty hard. I was already entering engineering without much motivation or a particularly strong passion for the field. Seeing my grades made things even worse.</p>
+    <p>If anything, I went from having little motivation to having negative motivation.</p>
+    <p>I was genuinely discouraged, and I think I started experiencing burnout towards the end of the term.</p>
+    <p>But somehow, I made it through.</p>
+    <p>I passed all my courses.</p>
+    <p>Were they the best grades? Absolutely not.</p>
+    <p>But did I pass?</p>
+    <p>I did.</p>
+    <p>And as we like to say, a pass is a pass.</p>
+    <figure><img loading="lazy" src="images/blog-5.jpg" alt="A group of friends posing together indoors"></figure><figure><img loading="lazy" src="images/blog-6.jpg" alt="A campus store with racks of clothing and a mirror" style="object-position:50% 70%"></figure>
+
+    <h2>Social Life: Is Waterloo Really That Bad?</h2>
+    <p>Before coming to Waterloo, I had heard all the usual things.</p>
+    <p>Waterloo has no social life. Everyone is stressed. Everyone is studying. Everyone is going bald.</p>
+    <p>And, of course, the endless Reddit memes.</p>
+    <p>But honestly? I don’t think Waterloo’s social life was nearly as bad as people made it out to be.</p>
+    <p>Maybe I had prepared myself for the absolute worst-case scenario, but I actually found the social scene pretty lively.</p>
+    <p>Sure, there aren’t parties happening every single day. But if you know the right people, there are always opportunities to go out, hang out, and have fun.</p>
+    <p>So I wouldn’t say Waterloo has no social life. I think it really depends on the people you surround yourself with and how much effort you put into meeting others.</p>
+    <p>Personally, making friends wasn’t something I struggled with too much. I’m relatively outgoing and extroverted, so I found it pretty natural to approach people, start conversations, and find people to spend time with.</p>
+    <p>And one thing I didn’t expect?</p>
+    <p>One of the people I first started talking to during Orientation Week eventually became my best friend.</p>
+    <p>It’s funny how that works. You meet someone during those first few days, exchange the usual introductions, and have absolutely no idea how important that person might become in your life.</p>
+    <p>I’m genuinely grateful for the friendships I made during 1A, especially knowing that some of those people are still part of my everyday life.</p>
+    <p>And honestly, that ended up being one of my favourite parts of the entire experience.</p>
+
+    <h2>A Few Things I’d Tell Incoming First Years</h2>
+    <p>Looking back, here are a few things I’d tell someone who’s about to start their first year at Waterloo.</p>
+
+    <h3>1. Don’t let Reddit scare you.</h3>
+    <p>I know, I know. Incoming first years are going to spend hours scrolling through Reddit, looking for advice, opinions, and what to expect.</p>
+    <p>But please, take everything you read with a grain of salt.</p>
+    <p>Waterloo isn’t necessarily as depressing or socially dead as people make it out to be. Everyone’s experience is different, and yours doesn’t have to look like someone else’s.</p>
+
+    <h3>2. Don’t underestimate the responsibility that comes with living independently.</h3>
+    <p>Moving into residence is exciting, but remember that you’re also responsible for yourself now. Learn to manage your time, take care of your space, and make sure you’re looking after yourself.</p>
+
+    <h3>3. Take advantage of first-year engineering tutors.</h3>
+    <p>This is probably one of my biggest academic recommendations.</p>
+    <p>I know a lot of people suggest attending tutorials or visiting your professors during office hours. And while those are great resources, I personally found the First-Year Engineering Office’s tutoring resources incredibly helpful.</p>
+    <p>The tutors were genuinely nice, approachable, and willing to help. I went to them quite often, especially when I was struggling with programming and physics.</p>
+    <p>Don’t be afraid to ask for help. You don’t have to figure everything out by yourself.</p>
+
+    <h3>4. Find your people.</h3>
+    <p>University becomes so much more enjoyable when you have people to experience it with.</p>
+    <p>Whether it’s studying together, getting food, complaining about assignments, or simply walking around campus, having friends around makes a huge difference.</p>
+    <p>And don’t feel pressured to find your lifelong friends during Orientation Week. Sometimes the people who end up mattering most are the ones you least expect.</p>
+
+    <h2>Looking Back at 1A as a Current 2A Student</h2>
+    <p>If I had to describe 1A in one sentence, I’d say it was a term of excitement, adjustment, and a much-needed reality check.</p>
+    <p>I came into university excited about everything that was ahead of me. I was looking forward to independence, new friendships, new experiences, and everything that came with being a university student.</p>
+    <p>And I got all of that.</p>
+    <p>But I also experienced academic struggles, burnout, disappointment, and moments where I genuinely questioned whether I belonged in the program I had chosen.</p>
+    <p>I think that’s something people don’t talk about enough. Sometimes, the excitement of starting university slowly gets overshadowed by the reality of actually being a university student.</p>
+    <p>You realize that independence comes with responsibility, that being smart in high school doesn’t automatically mean you’ll excel in university, and that sometimes, simply getting through the term is an accomplishment in itself.</p>
+    <p>But despite everything, I wouldn’t say my 1A experience was bad.</p>
+    <p>It wasn’t perfect, and it certainly wasn’t what I had imagined in every way. But I met wonderful people, experienced things for the first time, learned more about myself, and somehow made it through one of the biggest transitions of my life.</p>
+    <p>And that’s something worth celebrating.</p>
+    <p>To all the incoming first years:</p>
+    <p>It’s okay to be scared. It’s okay to be excited. In fact, I think you should be a little bit of both.</p>
+    <p>You’re about to enter a completely new chapter of your life. There will be good days, terrible days, moments when you question everything, and moments when you realize just how lucky you are to be where you are.</p>
+    <p>Don’t put too much pressure on yourself to have everything figured out.</p>
+    <p>Enjoy the beginning. Make friends. Explore. Ask for help. And please, don’t spend your entire first year worrying about what everyone on Reddit has to say.</p>
+    <p>You’ll be okay.</p>
+    <p>And remember, a pass is a pass.</p>
+    
+    
+    
+  </article>
+
+  <footer>© <span id="yr">2026</span> Evelyn Choi</footer>
+</div>
+
+<script>
+document.getElementById('yr').textContent=new Date().getFullYear();
+var home=document.getElementById('home'),post=document.getElementById('post');
+function route(){
+  var isPost=location.hash==='#first-year-at-waterloo';
+  home.hidden=isPost;post.hidden=!isPost;
+  if(isPost){window.scrollTo(0,0);}
+  else if(location.hash){var el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView();}
+}
+window.addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
